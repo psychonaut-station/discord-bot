@@ -39,13 +39,17 @@ async function handleChatInputCommand(
 	} catch (error) {
 		logger.error(error);
 		try {
-			if (interaction.replied || interaction.deferred) {
-				interaction.followUp({
+			if (interaction.deferred) {
+				await interaction.editReply(
+					'There was an error while executing this command!'
+				);
+			} else if (interaction.replied) {
+				await interaction.followUp({
 					content: 'There was an error while executing this command!',
 					ephemeral: true,
 				});
 			} else {
-				interaction.reply({
+				await interaction.reply({
 					content: 'There was an error while executing this command!',
 					ephemeral: true,
 				});
